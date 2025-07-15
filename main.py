@@ -4,14 +4,11 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 import asyncio
 
-# Загружаем переменные окружения
 load_dotenv()
 
-# Получаем токен и ID
 TOKEN = os.getenv("TOKEN")
 USER_ID = os.getenv("USER_ID")
 
-# Проверяем наличие необходимых переменных
 if not TOKEN:
     raise ValueError("Не указан TOKEN в переменных окружения")
 if not USER_ID:
@@ -22,18 +19,15 @@ try:
 except ValueError:
     raise ValueError("USER_ID должен быть числом")
 
-# Инициализация бота и диспетчера
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 router = Router()
 
-# Обработчик команды /start
 @router.message(Command("start"))
 async def start(message: types.Message):
     await message.answer("Привет! Я бот для обработки заявок. Напишите 'заявка', чтобы оставить заявку.")
 
-# Обработчик сообщений с заявками
-@router.message(lambda message: message.text.lower() in ["оставить заявку", "заявка"])
+@router.message(lambda message: message.text.lower() in ["заявка", "оставить заявку"])
 async def handle_request(message: types.Message):
     username = message.from_user.username or 'без ника'
     try:
@@ -42,12 +36,10 @@ async def handle_request(message: types.Message):
     except Exception as e:
         await message.answer("Произошла ошибка при отправке заявки. Попробуйте позже.")
 
-# Функция запуска
 async def main():
     print("Бот запущен...")
     dp.include_router(router)
     await dp.start_polling(bot)
 
-# Запускаем асинхронно
 if __name__ == "__main__":
     asyncio.run(main())
