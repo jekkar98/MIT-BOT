@@ -1,5 +1,0 @@
-my-telegram-bot/
-├── main.py          # Исправленный код бота
-├── requirements.txt # Зависимости
-├── runtime.txt      # Версия Python (если используете Render)
-└── .env             # Токен бота (НЕ загружайте его в Git!)
