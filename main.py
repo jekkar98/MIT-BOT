@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
-USER_ID = os.getenv("USER_ID")  # Убираем принудительное преобразование в int
+USER_ID = os.getenv("USER_ID")
 
 if not USER_ID:
     raise ValueError("Переменная USER_ID не задана")
@@ -16,9 +16,9 @@ except ValueError:
     raise ValueError("USER_ID должен быть числом")
 
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()  # Убрали параметр bot
 
-@dp.message_handler(commands="start")
+@dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     await message.answer("Привет! Я бот для обработки заявок. Напишите 'заявка', чтобы оставить заявку.")
 
@@ -30,7 +30,7 @@ async def handle_request(message: types.Message):
 
 async def main():
     print("Бот запущен...")
-    await dp.start_polling()
+    await dp.start_polling(bot)  # Теперь передаем bot сюда
 
 if __name__ == "__main__":
     from aiogram import executor
