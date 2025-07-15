@@ -1,27 +1,26 @@
-FROM python:3.11-slim
+# Используем более стабильную версию Python
+FROM python:3.10-slim
 
-# Создаем временного пользователя
-RUN useradd -m deploy
-USER deploy
+WORKDIR /app
 
-WORKDIR /home/deploy/app
-
-# Устанавливаем необходимые пакеты
+# Устанавливаем только необходимые пакеты
 RUN apt-get update && \
-    apt-get install -y build-essential libssl-dev cargo rustc
+    apt-get install -y build-essential libssl-dev
 
-# Создаем директорию для кэша cargo
-RUN mkdir /home/deploy/.cargo && \
-    chmod 755 /home/deploy/.cargo
+# Добавляем Rust и Cargo
+RUN apt-get install -y cargo rustc
+
+# Создаем директорию для кэша
+RUN mkdir /tmp/cargo && \
+    chmod 777 /tmp/cargo
 
 # Копируем файлы проекта
-COPY --chown=deploy:deploy . /home/deploy/app
+COPY . /app
 
-# Устанавливаем зависимости от имени пользователя
+# Устанавливаем зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Возвращаемся к root для настройки прав
-USER root
+CMD ["python", "main.py"]
 
 # Настраиваем права доступа
 RUN chown -R deploy:deploy /home/deploy/app
