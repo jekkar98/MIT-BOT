@@ -1,13 +1,18 @@
 import os
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
 from dotenv import load_dotenv
 
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
-USER_ID = int(os.getenv("USER_ID"))  # Добавляем конвертацию в int
+USER_ID = int(os.getenv("USER_ID"))
+
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+storage = MemoryStorage()
+dp = Dispatcher(bot, storage=storage)
 
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
@@ -19,6 +24,10 @@ async def handle_request(message: types.Message):
     await bot.send_message(USER_ID, f"Новая заявка от @{username}:\n{message.text}")
     await message.answer("Заявка отправлена! Мы скоро свяжемся с вами.")
 
-if __name__ == "__main__":
+async def main():
     print("Бот запущен...")
-    executor.start_polling(dp, skip_updates=True)
+    await dp.start_polling()
+
+if __name__ == "__main__":
+    from aiogram import executor
+    executor.start(main())
