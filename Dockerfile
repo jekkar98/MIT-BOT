@@ -7,8 +7,10 @@ WORKDIR /app
 # Копируем файлы проекта
 COPY . /app
 
-# Устанавливаем зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Устанавливаем зависимости с правами суперпользователя
+RUN --mount=type=cache,sharing=locked,target=/root/.cache \
+    pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Указываем команду для запуска
 CMD ["python", "main.py"]
