@@ -4,15 +4,13 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Устанавливаем только необходимые пакеты
-RUN apt-get update && \
-    apt-get install -y build-essential libssl-dev
+RUN apt-get update && \ apt-get install -y build-essential libssl-dev
 
 # Добавляем Rust и Cargo
 RUN apt-get install -y cargo rustc
 
 # Создаем директорию для кэша
-RUN mkdir /tmp/cargo && \
-    chmod 777 /tmp/cargo
+RUN mkdir /tmp/cargo && \chmod 777 /tmp/cargo
 
 # Копируем файлы проекта
 COPY . /app
