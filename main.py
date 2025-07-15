@@ -2,6 +2,7 @@ import os
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import Command
 from dotenv import load_dotenv
+import asyncio
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -47,6 +48,6 @@ async def main():
     dp.include_router(router)
     await dp.start_polling(bot)
 
+# Запускаем асинхронно
 if __name__ == "__main__":
-    from aiogram import executor
-    executor.start(main())
+    asyncio.run(main())
