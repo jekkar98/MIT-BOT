@@ -5,12 +5,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
-USER_ID = int(os.getenv("USER_ID"))
+USER_ID = os.getenv("USER_ID")  # Убираем принудительное преобразование в int
+
+if not USER_ID:
+    raise ValueError("Переменная USER_ID не задана")
+
+try:
+    USER_ID = int(USER_ID)
+except ValueError:
+    raise ValueError("USER_ID должен быть числом")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-@dp.message_handler(commands=["start"])
+@dp.message_handler(commands="start")
 async def start(message: types.Message):
     await message.answer("Привет! Я бот для обработки заявок. Напишите 'заявка', чтобы оставить заявку.")
 
