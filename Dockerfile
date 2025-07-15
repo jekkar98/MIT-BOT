@@ -14,3 +14,4 @@ RUN --mount=type=cache,sharing=locked,target=/root/.cache \
 
 # Указываем команду для запуска
 CMD ["python", "main.py"]
+RUN apt-get update && \ apt-get install -y build-essential libssl-dev
