@@ -1,11 +1,11 @@
-
 import os
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv
 
-load_dotenv()  # Загружаем переменные из .env
+load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
+USER_ID = int(os.getenv("USER_ID"))  # Добавляем конвертацию в int
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
@@ -15,9 +15,8 @@ async def start(message: types.Message):
 
 @dp.message_handler(lambda message: message.text.lower() in ["оставить заявку", "заявка"])
 async def handle_request(message: types.Message):
-    user_id = 821932338  # Ваш Telegram ID
     username = message.from_user.username or 'без ника'
-    await bot.send_message(user_id, f"Новая заявка от @{username}:\n{message.text}")
+    await bot.send_message(USER_ID, f"Новая заявка от @{username}:\n{message.text}")
     await message.answer("Заявка отправлена! Мы скоро свяжемся с вами.")
 
 if __name__ == "__main__":
