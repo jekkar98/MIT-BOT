@@ -1,4 +1,3 @@
 aiogram==3.0.0
 python-dotenv==1.0.0
 --prefer-binary
-cryptography==41.0.7  # пример пакета, вызывающего ошибку
