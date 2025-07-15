@@ -1,8 +1,5 @@
 import os
 from aiogram import Bot, Dispatcher, types
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,8 +8,7 @@ TOKEN = os.getenv("TOKEN")
 USER_ID = int(os.getenv("USER_ID"))
 
 bot = Bot(token=TOKEN)
-storage = MemoryStorage()
-dp = Dispatcher(bot, storage=storage)
+dp = Dispatcher(bot)
 
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
